@@ -1,8 +1,11 @@
 const db = require('../config/database');
+const axios = require('axios'); // Para fazer requisições HTTP
+const obterRota = require("../utils/obterRota");
 
 const { Corrida, Carteira, Motoboy } = require('../models');
 
 // Criar uma nova corrida
+
 exports.criarCorrida = async (req, res) => {
     try {
         console.log(" Empresa ID recebido:", req.empresa_id);
@@ -18,17 +21,35 @@ exports.criarCorrida = async (req, res) => {
             return res.status(400).json({ error: "Todos os campos são obrigatórios!" });
         }
 
+         // Obtendo coordenadas
+         const origemCoords = await obterCoordenadas(origem);
+         const destinoCoords = await obterCoordenadas(destino);
+
+         if (!origemCoords || !destinoCoords) {
+            return res.status(400).json({ error: "Não foi possível obter coordenadas para os endereços fornecidos." });
+         }
+          // Obtendo a rota
+        const rota = await obterRota(origemCoords, destinoCoords);
+
         const novaCorrida = await Corrida.create({
             empresa_id,  // O ID já vem automaticamente do token
             descricao,
             origem,
             destino,
+            origem_lat: origemCoords.lat,
+            origem_lng: origemCoords.lng,
+            destino_lat: destinoCoords.lat,
+            destino_lng: destinoCoords.lng,
             valor,
             forma_pagamento,
             status: 'pendente' // status inicial
         });
 
-        return res.status(201).json({ message: "Corrida criada com sucesso!", corrida: novaCorrida });
+        return res.status(201).json({ 
+            message: "Corrida criada com sucesso!", 
+            corrida: novaCorrida,
+            rota 
+        });
 
     } catch (error) {
         console.error("Erro ao criar corrida:", error);
@@ -153,5 +174,43 @@ exports.atualizarStatusCorrida = async (req, res) => {
     } catch (error) {
         console.error(" Erro ao atualizar status da corrida:", error);
         res.status(500).json({ error: "Erro interno no servidor" });
+    }
+};
+async function obterCoordenadas(endereco) {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(endereco)}&format=json`;
+
+    try {
+        const resposta = await axios.get(url);
+        if (resposta.data.length === 0) {
+            throw new Error("Endereço não encontrado.");
+        }
+        return {
+            lat: parseFloat(resposta.data[0].lat),
+            lng: parseFloat(resposta.data[0].lon)
+        };
+    } catch (error) {
+        console.error("Erro ao buscar coordenadas:", error);
+        throw new Error("Falha ao obter coordenadas.");
+    }
+}
+// Função para obter a rota entre origem e destino
+exports.obterRota = async (req, res) => {
+    try {
+        const { corridaId } = req.params;
+        const corrida = await Corrida.findByPk(corridaId);
+
+        if (!corrida) {
+            return res.status(404).json({ error: "Corrida não encontrada" });
+        }
+
+        const origemCoords = { lat: corrida.origem_lat, lng: corrida.origem_lng };
+        const destinoCoords = { lat: corrida.destino_lat, lng: corrida.destino_lng };
+
+        const rota = await obterRota(origemCoords, destinoCoords);
+
+        return res.status(200).json({ rota });
+    } catch (error) {
+        console.error("Erro ao obter rota:", error);
+        return res.status(500).json({ error: "Erro ao calcular a rota" });
     }
 };
