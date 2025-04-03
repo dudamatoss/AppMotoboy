@@ -35,6 +35,7 @@ const Motoboy = db.define('Motoboy', {
     modelo: {
         type: DataTypes.STRING
     }
+     
 }, {
     tableName: 'motoboys', // Usa exatamente o nome da tabela no banco
     timestamps: false // Remove os campos `createdAt` e `updatedAt`

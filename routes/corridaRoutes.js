@@ -14,5 +14,8 @@ router.put('/aceitar/:id', verificarToken, corridaController.aceitarCorrida);
 
 // Rota para atualizar status da corrida (concluir ou cancelar)
 router.put('/status/:id', verificarToken, corridaController.atualizarStatusCorrida);
+    
+// Nova rota para obter a rota da corrida pelo ID
+router.get("/rota/:corridaId", corridaController.obterRota);
 
 module.exports = router;
