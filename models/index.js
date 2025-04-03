@@ -7,10 +7,12 @@ const Corrida = require('./Corridas');
 const Carteira = require("./Carteira")
 
 
+
 module.exports = {
     sequelize,
     Empresa,
     Motoboy,
     Corrida,
     Carteira
+   
 };

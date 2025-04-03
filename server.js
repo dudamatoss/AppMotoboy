@@ -16,10 +16,12 @@ app.get('/', (req, res) => {
 const motoboyRoutes = require('./routes/motoboyRoutes');
 const empresaRoutes = require('./routes/empresaRoutes');
 const corridaRoutes = require('./routes/corridaRoutes');
+const carteiraRoutes = require('./routes/carteiraRoutes');
 
 app.use('/api/motoboy', motoboyRoutes);
 app.use('/api/empresa',empresaRoutes);
 app.use('/api/corridas',corridaRoutes);
+app.use('/api/carteira',carteiraRoutes);
 
 // Iniciar o servidor
 const PORT = process.env.PORT || 3000;
