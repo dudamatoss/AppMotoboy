@@ -7,12 +7,10 @@ const Corrida = require('./Corridas');
 const Carteira = require("./Carteira")
 
 
-Motoboy.hasOne(Carteira, { foreignKey: 'motoboy_id' });
-Carteira.belongsTo(Motoboy, { foreignKey: 'motoboy_id' });
-
 module.exports = {
     sequelize,
     Empresa,
     Motoboy,
-    Corrida
+    Corrida,
+    Carteira
 };

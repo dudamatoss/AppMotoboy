@@ -67,12 +67,10 @@ exports.registerMotoboy = async (req, res) => {
 
         res.status(201).json({ message: "Motoboy cadastrado com sucesso!" });
     } catch (error) {
-        console.error("❌ Erro ao cadastrar motoboy:", error);
+        console.error(" Erro ao cadastrar motoboy:", error);
         res.status(500).json({ error: "Erro interno no servidor" });
     }
 };
-
-
 
 
 // Função para login de motoboy
@@ -109,7 +107,7 @@ exports.loginMotoboy = async (req, res) => {
 
         res.status(200).json({ message: "Login realizado com sucesso!", token });
     } catch (error) {
-        console.error("❌ Erro ao fazer login:", error.stack);
+        console.error(" Erro ao fazer login:", error.stack);
         res.status(500).json({ error: "Erro interno no servidor" });
     }
 };

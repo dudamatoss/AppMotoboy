@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const db = require('../config/database');
+const Carteira = require("./Carteira");
 
 const Motoboy = db.define('Motoboy', {
     id: {
@@ -38,5 +39,8 @@ const Motoboy = db.define('Motoboy', {
     tableName: 'motoboys', // Usa exatamente o nome da tabela no banco
     timestamps: false // Remove os campos `createdAt` e `updatedAt`
 });
+
+Motoboy.hasOne(Carteira, { foreignKey: "motoboy_id", as: "carteira" });
+Carteira.belongsTo(Motoboy, { foreignKey: "motoboy_id", as: "motoboy" });
 
 module.exports = Motoboy;

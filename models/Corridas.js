@@ -20,7 +20,7 @@ const Corrida = sequelize.define('Corrida', {
     },
     motoboy_id: {
         type: DataTypes.INTEGER,
-        allowNull: true, // Será preenchido quando um motoboy aceitar a corrida
+        allowNull: true, // preenchido quando um motoboy aceitar a corrida
         references: {
             model: Motoboy,
             key: 'id'

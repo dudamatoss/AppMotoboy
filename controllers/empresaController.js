@@ -41,7 +41,7 @@ exports.registerEmpresa = async (req, res) => {
 
         res.status(201).json({ message: "Empresa cadastrada com sucesso!" });
     } catch (error) {
-        console.error("❌ Erro ao cadastrar empresa:", error);
+        console.error(" Erro ao cadastrar empresa:", error);
         res.status(500).json({ error: "Erro interno no servidor" });
     }
 };

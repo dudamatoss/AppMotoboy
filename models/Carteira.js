@@ -1,12 +1,12 @@
 const { DataTypes } = require("sequelize");
-const db = require("../config/database"); // Certifique-se de que este arquivo exporta a instância do Sequelize
+const db = require("../config/database");
 
 const Carteira = db.define("Carteira", {
     motoboy_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: "Motoboy",
+            model: "motoboys",
             key: "id"
         },
         unique: true

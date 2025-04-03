@@ -13,6 +13,6 @@ router.get('/pendentes', corridaController.listarCorridasPendentes);
 router.put('/aceitar/:id', verificarToken, corridaController.aceitarCorrida);
 
 // Rota para atualizar status da corrida (concluir ou cancelar)
-router.put('/status/:id', corridaController.atualizarStatusCorrida);
+router.put('/status/:id', verificarToken, corridaController.atualizarStatusCorrida);
 
 module.exports = router;
